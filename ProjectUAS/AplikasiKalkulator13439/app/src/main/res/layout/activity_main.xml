@@ -1,51 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/txtAplikasi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:text="KALKULATOR\n  13439"
+        android:textColor="@color/purple_700"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.074" />
+
+    <EditText
+        android:id="@+id/edtNilai2"
+        android:layout_width="142dp"
+        android:layout_height="46dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="52dp"
+        android:hint="Nilai 2"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtAplikasi"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <EditText
+        android:id="@+id/edtNilai1"
+        android:layout_width="143dp"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="24dp"
+        android:hint="Nilai 1"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtAplikasi"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <RadioGroup
+        android:id="@+id/rgOperasi"
+        android:layout_width="296dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtNilai2">
+
+        <RadioButton
+            android:id="@+id/rbtnTambah"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:text="+" />
+
+        <RadioButton
+            android:id="@+id/rbtnKurang"
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:text="-" />
+
+        <RadioButton
+            android:id="@+id/rbtnKali"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="x" />
+
+        <RadioButton
+            android:id="@+id/rbtnBagi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=":" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnHitung"
+        android:layout_width="142dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="monospace"
+        android:text="Hitung"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rgOperasi" />
+
+    <Button
+        android:id="@+id/btnHapus"
+        android:layout_width="147dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="monospace"
+        android:text="Hapus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnHitung" />
+
+
+
+    <TextView
+        android:id="@+id/txtRiwayat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:fontFamily="monospace"
+        android:text="Riwayat "
+        android:textColor="@color/purple_500"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.079"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnHapus"
+        app:layout_constraintVertical_bias="0.107" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="100dp"
-        android:background="@android:color/darker_gray" />
+        android:id="@+id/recRiwayat"
+        android:layout_width="360dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="24dp"
+        android:overScrollMode="always"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.037"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtRiwayat"
+        app:layout_constraintVertical_bias="0.259" />
 
-    <EditText
-        android:id="@+id/edittext_line_1"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="52dp"
-        android:hint="Line 1" />
-
-    <EditText
-        android:id="@+id/edittext_line_2"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:hint="Line 2" />
-
-    <Button
-        android:id="@+id/button_insert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/edittext_line_1"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="26dp"
-        android:layout_toEndOf="@id/edittext_line_1"
-        android:text="insert" />
-
-    <Button
-        android:id="@+id/button_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/button_insert"
-        android:layout_marginStart="32dp"
-        android:layout_toEndOf="@+id/button_insert"
-        android:text="save" />
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

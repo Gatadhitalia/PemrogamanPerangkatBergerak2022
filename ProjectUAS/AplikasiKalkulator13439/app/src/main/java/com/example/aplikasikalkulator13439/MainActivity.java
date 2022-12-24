@@ -20,31 +20,25 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<ItemList> mExampleList;
-    private RecyclerView mRecyclerView;
-    private SharedPreferenceAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    RadioGroup operasiGroup;
-    RadioButton tambahRadio, kurangRadio, kaliRadio, bagiRadio;
+    RadioGroup rgOperasi;
+    RadioButton rbtnTambah, rbtnKurang, rbtnKali, rbtnBagi;
+
+    private ArrayList<ListHistory> listHistory;
+    private RecyclerView recyclerView;
+    private HistoryAdapter historyAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main);
 
         loadData();
         buildRecyclerView();
-        setInsertButton();
+        setCountButton();
 
-        Button buttonSave = findViewById(R.id.button_save);
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveData();
-            }
-        });
-
-        Button buttonDelete = findViewById(R.id.button_delete);
+        Button buttonDelete = findViewById(R.id.btnHapus);
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,22 +46,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        operasiGroup = findViewById(R.id.operasiGroup);
-        tambahRadio = findViewById(R.id.tambahRadio);
-        kurangRadio = findViewById(R.id.kurangRadio);
-        kaliRadio = findViewById(R.id.kaliRadio);
-        bagiRadio = findViewById(R.id.bagiRadio);
+        rgOperasi = findViewById(R.id.rgOperasi);
+        rbtnTambah = findViewById(R.id.rbtnTambah);
+        rbtnKurang = findViewById(R.id.rbtnKurang);
+        rbtnKali = findViewById(R.id.rbtnKali);
+        rbtnBagi = findViewById(R.id.rbtnBagi);
 
-        operasiGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rgOperasi.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (tambahRadio.isChecked()) {
+                if (rbtnTambah.isChecked()) {
                     Toast.makeText(MainActivity.this, "Tambah", Toast.LENGTH_SHORT).show();
-                } else if (kurangRadio.isChecked()) {
+                } else if (rbtnKurang.isChecked()) {
                     Toast.makeText(MainActivity.this, "Kurang", Toast.LENGTH_SHORT).show();
-                } else if (kaliRadio.isChecked()) {
+                } else if (rbtnKali.isChecked()) {
                     Toast.makeText(MainActivity.this, "Kali", Toast.LENGTH_SHORT).show();
-                } else if (bagiRadio.isChecked()) {
+                } else if (rbtnBagi.isChecked()) {
                     Toast.makeText(MainActivity.this, "Bagi", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -78,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(mExampleList);
+        String json = gson.toJson(listHistory);
         editor.putString("task list", json);
         editor.apply();
     }
@@ -87,62 +81,61 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("task list", null);
-        Type type = new TypeToken<ArrayList<ItemList>>() {}.getType();
-        mExampleList = gson.fromJson(json, type);
+        Type type = new TypeToken<ArrayList<ListHistory>>() {}.getType();
+        listHistory = gson.fromJson(json, type);
 
-        if (mExampleList == null) {
-            mExampleList = new ArrayList<>();
+        if (listHistory == null) {
+            listHistory = new ArrayList<>();
         }
     }
 
     private void buildRecyclerView() {
-        mRecyclerView = findViewById(R.id.recyclerview);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new SharedPreferenceAdapter(mExampleList);
+        recyclerView = findViewById(R.id.recRiwayat);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        historyAdapter = new HistoryAdapter(listHistory);
 
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(historyAdapter);
     }
 
-    private void setInsertButton() {
-        Button buttonInsert = findViewById(R.id.button_insert);
-        buttonInsert.setOnClickListener(new View.OnClickListener() {
+    private void setCountButton() {
+        Button buttonCount = findViewById(R.id.btnHitung);
+        buttonCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText line1 = findViewById(R.id.edittext_line_1);
-                EditText line2 = findViewById(R.id.edittext_line_2);
-                insertItem(line1.getText().toString(), line2.getText().toString());
+                EditText nilai1 = findViewById(R.id.edtNilai1);
+                EditText nilai2 = findViewById(R.id.edtNilai2);
+                CountItem(nilai1.getText().toString(), nilai2.getText().toString());
             }
         });
     }
 
-    private void insertItem(String line1, String line2) {
+    private void CountItem(String line1, String line2) {
         int hasil = 0;
-        if (tambahRadio.isChecked()) {
+        if (rbtnTambah.isChecked()) {
             hasil = Integer.parseInt(line1) + Integer.parseInt(line2);
-        } else if (kurangRadio.isChecked()) {
+        } else if (rbtnKurang.isChecked()) {
             hasil = Integer.parseInt(line1) - Integer.parseInt(line2);
-        } else if (kaliRadio.isChecked()) {
+        } else if (rbtnKali.isChecked()) {
             hasil = Integer.parseInt(line1) * Integer.parseInt(line2);
-        } else if (bagiRadio.isChecked()) {
+        } else if (rbtnBagi.isChecked()) {
             hasil = Integer.parseInt(line1) / Integer.parseInt(line2);
         }
 
-        // memunculkan operasi yang dipilih dari operasiGroup ke dalam hasil
         String operasi = "";
-        if (tambahRadio.isChecked()) {
+        if (rbtnTambah.isChecked()) {
             operasi = "+";
-        } else if (kurangRadio.isChecked()) {
+        } else if (rbtnKurang.isChecked()) {
             operasi = "-";
-        } else if (kaliRadio.isChecked()) {
+        } else if (rbtnKali.isChecked()) {
             operasi = "x";
-        } else if (bagiRadio.isChecked()) {
+        } else if (rbtnBagi.isChecked()) {
             operasi = ":";
         }
 
-        mExampleList.add(new ItemList(line1, operasi, line2, String.valueOf(hasil)));
-        mAdapter.notifyItemInserted(mExampleList.size());
+        listHistory.add(new ListHistory(line1, operasi, line2, String.valueOf(hasil)));
+        historyAdapter.notifyItemInserted(listHistory.size());
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -151,8 +144,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
-        mExampleList.clear();
-        mAdapter.notifyDataSetChanged();
+        listHistory.clear();
+        historyAdapter.notifyDataSetChanged();
     }
 
 }
